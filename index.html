@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elektrik Yükleri ve Enerjisi Projesi</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --light: #ecf0f1;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; background: #f4f4f4; }
+        
+        /* Navigasyon */
+        nav { background: var(--primary); color: white; padding: 1rem; position: sticky; top: 0; display: flex; justify-content: center; gap: 20px; z-index: 1000; }
+        nav a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; }
+        nav a:hover { color: var(--accent); }
+
+        header { background: var(--accent); color: white; text-align: center; padding: 2rem 1rem; }
+        
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        section { display: none; padding: 20px; }
+        section.active { display: block; }
+
+        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+
+        /* Deney Alanı */
+        .experiment-box { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-top: 20px; }
+        .particle { width: 50px; height: 50px; border-radius: 50%; display: inline-block; margin: 10px; line-height: 50px; color: white; font-weight: bold; font-size: 20px; }
+        .plus { background: #e74c3c; }
+        .minus { background: #3498db; }
+        #result-text { margin-top: 15px; font-weight: bold; color: #27ae60; }
+
+        footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #777; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⚡ Elektrik Yükleri ve Enerjisi</h1>
+    <p>Fen Bilimleri Proje Ödevi</p>
+</header>
+
+<nav>
+    <a onclick="showSection('home')">Ana Sayfa</a>
+    <a onclick="showSection('info')">Bilgi Deposu</a>
+    <a onclick="showSection('experiment')">Sanal Deney</a>
+</nav>
+
+<div class="container">
+    
+    <!-- ANA SAYFA -->
+    <section id="home" class="active">
+        <h2>Hoş Geldin!</h2>
+        <p>Bu web sitesinde elektrik yüklerinin gizemli dünyasını keşfedeceksin. Statik elektrikten akıma, yüklerin birbirini itmesinden çekmesine kadar her şey burada!</p>
+        <p><strong>Neler Öğreneceksin?</strong></p>
+        <ul>
+            <li>Pozitif ve Negatif yükler arasındaki ilişki.</li>
+            <li>Sürtünme, dokunma ve etki ile elektriklenme.</li>
+            <li>Elektrik enerjisinin dönüşümü.</li>
+        </ul>
+    </section>
+
+    <!-- BİLGİ DEPOSU -->
+    <section id="info">
+        <h2>Elektrik Yükleri Hakkında Her Şey</h2>
+        <h3>1. Atomun Yapısı ve Yükler</h3>
+        <p>Atomun çekirdeğinde <strong>Protonlar (+)</strong>, çevresinde ise <strong>Elektronlar (-)</strong> bulunur. Cisimler elektron kaybederse pozitif, elektron kazanırsa negatif yüklenir.</p>
+        
+        <h3>2. Elektriklenme Çeşitleri</h3>
+        <ul>
+            <li><strong>Sürtünme ile:</strong> İki yalıtkan madde birbirine sürtüldüğünde zıt yükle yüklenirler.</li>
+            <li><strong>Dokunma ile:</strong> Yüklü bir cisim diğerine dokundurulduğunda toplam yükü paylaşırlar.</li>
+            <li><strong>Etki (Tesir) ile:</strong> Cisimler temas etmeden, birbirlerinin yük dengesini bozarlar.</li>
+        </ul>
+    </section>
+
+    <!-- DENEY ALANI -->
+    <section id="experiment">
+        <h2>Sanal Deney: Yüklerin İtme ve Çekmesi</h2>
+        <p>Aşağıdaki butonları kullanarak iki cismi yan yana getir ve sonucun ne olacağını gör!</p>
+        
+        <div class="experiment-box">
+            <div id="p1" class="particle plus">+</div>
+            <div id="p2" class="particle plus">+</div>
+            <br>
+            <button onclick="setExperiment('plus', 'plus')">(+) ve (+)</button>
+            <button onclick="setExperiment('plus', 'minus')">(+) ve (-)</button>
+            <button onclick="setExperiment('minus', 'minus')">(-) ve (-)</button>
+            
+            <p id="result-text">Aynı yükler birbirini iter!</p>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2024 Fen Bilimleri Projesi - Başarılar dilerim!</p>
+</footer>
+
+<script>
+    function showSection(id) {
+        // Tüm sectionları gizle
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        // Seçileni göster
+        document.getElementById(id).classList.add('active');
+    }
+
+    function setExperiment(type1, type2) {
+        const p1 = document.getElementById('p1');
+        const p2 = document.getElementById('p2');
+        const res = document.getElementById('result-text');
+
+        // Renkleri ve sembolleri ayarla
+        p1.className = 'particle ' + type1;
+        p1.innerText = type1 === 'plus' ? '+' : '-';
+        
+        p2.className = 'particle ' + type2;
+        p2.innerText = type2 === 'plus' ? '+' : '-';
+
+        // Sonucu yazdır
+        if (type1 === type2) {
+            res.innerText = "Aynı yükler birbirini İTER! ⬅️ ➡️";
+            res.style.color = "#e74c3c";
+        } else {
+            res.innerText = "Zıt yükler birbirini ÇEKER! ➡️ ⬅️";
+            res.style.color = "#27ae60";
+        }
+    }
+</script>
+
+</body>
+</html>

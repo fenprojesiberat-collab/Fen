@@ -3,133 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elektrik Yükleri ve Enerjisi Projesi</title>
+    <title>Fen Projesi | Elektrik Dünyası</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #e67e22;
-            --light: #ecf0f1;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --accent: #00d2ff;
+            --text: #ffffff;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; background: #f4f4f4; }
-        
-        /* Navigasyon */
-        nav { background: var(--primary); color: white; padding: 1rem; position: sticky; top: 0; display: flex; justify-content: center; gap: 20px; z-index: 1000; }
-        nav a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; }
-        nav a:hover { color: var(--accent); }
 
-        header { background: var(--accent); color: white; text-align: center; padding: 2rem 1rem; }
-        
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        
-        section { display: none; padding: 20px; }
-        section.active { display: block; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
 
-        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .main-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-        /* Deney Alanı */
-        .experiment-box { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-top: 20px; }
-        .particle { width: 50px; height: 50px; border-radius: 50%; display: inline-block; margin: 10px; line-height: 50px; color: white; font-weight: bold; font-size: 20px; }
-        .plus { background: #e74c3c; }
-        .minus { background: #3498db; }
-        #result-text { margin-top: 15px; font-weight: bold; color: #27ae60; }
+        h2 { color: var(--accent); margin-top: 40px; border-left: 5px solid var(--accent); padding-left: 15px; }
 
-        footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #777; }
+        /* Kart Konteynerı */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* Kart Tasarımı */
+        .card {
+            background: var(--card-bg);
+            width: 280px;
+            padding: 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, border 0.3s ease;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .card h3 { margin-bottom: 15px; }
+        .card p { font-size: 0.9rem; color: #ccc; }
+
+        /* Bilgi Paneli (Gizli) */
+        #info-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #252525;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            z-index: 1001;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .close-btn {
+            background: var(--accent);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Deney Alanı Kartı Özel */
+        .exp-card { border: 1px solid #ffcc00; }
+        .exp-card:hover { border-color: #ffcc00; box-shadow: 0 10px 20px rgba(255, 204, 0, 0.2); }
+
+        .particle {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: inline-block; line-height: 60px; font-size: 24px; font-weight: bold;
+            margin: 10px;
+        }
+        .plus { background: #ff4757; color: white; }
+        .minus { background: #2f3542; color: #70a1ff; border: 2px solid #70a1ff; }
+
+        footer { text-align: center; margin-top: 50px; color: #555; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>⚡ Elektrik Yükleri ve Enerjisi</h1>
-    <p>Fen Bilimleri Proje Ödevi</p>
-</header>
+    <h1 class="main-title">⚡ ELEKTRİK ENERJİSİ ⚡</h1>
 
-<nav>
-    <a onclick="showSection('home')">Ana Sayfa</a>
-    <a onclick="showSection('info')">Bilgi Deposu</a>
-    <a onclick="showSection('experiment')">Sanal Deney</a>
-</nav>
+    <h2>📖 Bilgi Kartları</h2>
+    <div class="card-grid">
+        <div class="card" onclick="openInfo('Atom ve Yükler', 'Cisimler çekirdeklerindeki proton (+) ve katmanlardaki elektron (-) yüklerinden oluşur. Elektron alan cisim NEGATİF, veren cisim POZİTİF yüklenir.')">
+            <h3>Atomun Yapısı</h3>
+            <p>Proton, Nötron ve Elektron dengesini öğrenmek için tıkla.</p>
+        </div>
+        <div class="card" onclick="openInfo('Elektriklenme Çeşitleri', '1. Sürtünme: Zıt yüklenme oluşur. <br>2. Dokunma: Toplam yük paylaşılır. <br>3. Etki: Yakınlaşma ile kutuplanma olur.')">
+            <h3>Elektriklenme</h3>
+            <p>Sürtünme, Dokunma ve Etki ile elektriklenmeyi keşfet.</p>
+        </div>
+        <div class="card" onclick="openInfo('Topraklama', 'Yüklü bir cismin iletken bir telle toprağa bağlanarak nötr hale gelmesine denir. Tankerlerdeki zincirler buna örnektir.')">
+            <h3>Topraklama</h3>
+            <p>Güvenlik için yüklerin toprağa aktarılması.</p>
+        </div>
+    </div>
 
-<div class="container">
+    <h2>🧪 Deney Kartları</h2>
+    <div class="card-grid">
+        <div class="card exp-card" onclick="openExp()">
+            <h3>Yük Etkileşim Deneyi</h3>
+            <p>Yükleri yan yana getirip itme/çekme kuvvetini test et.</p>
+        </div>
+    </div>
+
+    <!-- Panel Yapıları -->
+    <div class="overlay" id="overlay" onclick="closeInfo()"></div>
     
-    <!-- ANA SAYFA -->
-    <section id="home" class="active">
-        <h2>Hoş Geldin!</h2>
-        <p>Bu web sitesinde elektrik yüklerinin gizemli dünyasını keşfedeceksin. Statik elektrikten akıma, yüklerin birbirini itmesinden çekmesine kadar her şey burada!</p>
-        <p><strong>Neler Öğreneceksin?</strong></p>
-        <ul>
-            <li>Pozitif ve Negatif yükler arasındaki ilişki.</li>
-            <li>Sürtünme, dokunma ve etki ile elektriklenme.</li>
-            <li>Elektrik enerjisinin dönüşümü.</li>
-        </ul>
-    </section>
-
-    <!-- BİLGİ DEPOSU -->
-    <section id="info">
-        <h2>Elektrik Yükleri Hakkında Her Şey</h2>
-        <h3>1. Atomun Yapısı ve Yükler</h3>
-        <p>Atomun çekirdeğinde <strong>Protonlar (+)</strong>, çevresinde ise <strong>Elektronlar (-)</strong> bulunur. Cisimler elektron kaybederse pozitif, elektron kazanırsa negatif yüklenir.</p>
+    <div id="info-panel">
+        <h2 id="panel-title" style="margin-top:0"></h2>
+        <p id="panel-body"></p>
         
-        <h3>2. Elektriklenme Çeşitleri</h3>
-        <ul>
-            <li><strong>Sürtünme ile:</strong> İki yalıtkan madde birbirine sürtüldüğünde zıt yükle yüklenirler.</li>
-            <li><strong>Dokunma ile:</strong> Yüklü bir cisim diğerine dokundurulduğunda toplam yükü paylaşırlar.</li>
-            <li><strong>Etki (Tesir) ile:</strong> Cisimler temas etmeden, birbirlerinin yük dengesini bozarlar.</li>
-        </ul>
-    </section>
-
-    <!-- DENEY ALANI -->
-    <section id="experiment">
-        <h2>Sanal Deney: Yüklerin İtme ve Çekmesi</h2>
-        <p>Aşağıdaki butonları kullanarak iki cismi yan yana getir ve sonucun ne olacağını gör!</p>
-        
-        <div class="experiment-box">
+        <!-- Deney Alanı (Sadece Deney Kartında Açılır) -->
+        <div id="exp-area" style="display:none; text-align:center;">
             <div id="p1" class="particle plus">+</div>
             <div id="p2" class="particle plus">+</div>
-            <br>
-            <button onclick="setExperiment('plus', 'plus')">(+) ve (+)</button>
-            <button onclick="setExperiment('plus', 'minus')">(+) ve (-)</button>
-            <button onclick="setExperiment('minus', 'minus')">(-) ve (-)</button>
-            
-            <p id="result-text">Aynı yükler birbirini iter!</p>
+            <div id="exp-result" style="margin: 15px 0; font-weight: bold;">Sonuç: İtiyorlar!</div>
+            <button onclick="setCharge('plus','plus')" style="cursor:pointer">+/+</button>
+            <button onclick="setCharge('plus','minus')" style="cursor:pointer">+/-</button>
+            <button onclick="setCharge('minus','minus')" style="cursor:pointer">-/-</button>
         </div>
-    </section>
 
-</div>
+        <button class="close-btn" onclick="closeInfo()">Kapat</button>
+    </div>
 
-<footer>
-    <p>&copy; 2024 Fen Bilimleri Projesi - Başarılar dilerim!</p>
-</footer>
+    <footer>
+        <p>&copy; 2026 Fen Bilimleri Proje Ödevi - Berat</p>
+    </footer>
 
-<script>
-    function showSection(id) {
-        // Tüm sectionları gizle
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        // Seçileni göster
-        document.getElementById(id).classList.add('active');
-    }
-
-    function setExperiment(type1, type2) {
-        const p1 = document.getElementById('p1');
-        const p2 = document.getElementById('p2');
-        const res = document.getElementById('result-text');
-
-        // Renkleri ve sembolleri ayarla
-        p1.className = 'particle ' + type1;
-        p1.innerText = type1 === 'plus' ? '+' : '-';
-        
-        p2.className = 'particle ' + type2;
-        p2.innerText = type2 === 'plus' ? '+' : '-';
-
-        // Sonucu yazdır
-        if (type1 === type2) {
-            res.innerText = "Aynı yükler birbirini İTER! ⬅️ ➡️";
-            res.style.color = "#e74c3c";
-        } else {
-            res.innerText = "Zıt yükler birbirini ÇEKER! ➡️ ⬅️";
-            res.style.color = "#27ae60";
+    <script>
+        function openInfo(title, text) {
+            document.getElementById('panel-title').innerText = title;
+            document.getElementById('panel-body').innerHTML = text;
+            document.getElementById('exp-area').style.display = 'none';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('info-panel').style.display = 'block';
         }
-    }
-</script>
 
+        function openExp() {
+            document.getElementById('panel-title').innerText = 'Sanal Deney Alanı';
+            document.getElementById('panel-body').innerText = 'Yükleri seçerek etkileşimi gözlemle:';
+            document.getElementById('exp-area').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('info-panel').style.display = 'block';
+        }
+
+        function closeInfo() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('info-panel').style.display = 'none';
+        }
+
+        function setCharge(c1, c2) {
+            const p1 = document.getElementById('p1');
+            const p2 = document.getElementById('p2');
+            const res = document.getElementById('exp-result');
+
+            p1.className = 'particle ' + c1;
+            p1.innerText = c1 === 'plus' ? '+' : '-';
+            p2.className = 'particle ' + c2;
+            p2.innerText = c2 === 'plus' ? '+' : '-';
+
+            if(c1 === c2) {
+                res.innerText = "Aynı yükler birbirini İTER! ⬅️ ➡️";
+                res.style.color = "#ff4757";
+            } else {
+                res.innerText = "Zıt yükler birbirini ÇEKER! ➡️ ⬅️";
+                res.style.color = "#2ed573";
+            }
+        }
+    </script>
 </body>
 </html>
